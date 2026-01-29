@@ -1,0 +1,224 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}
+  {{ product.title }} - EcomSite
+{% endblock %}
+
+{% block content %}
+  <main class="px-4 sm:px-6 py-8 sm:py-14 w-full">
+    <div class="bg-gray-50 min-h-screen">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-10">
+        <!-- BREADCRUMB -->
+        <nav class="mb-3 xs:mb-4 sm:mb-5 md:mb-7 lg:mb-10" aria-label="Breadcrumb">
+          <div class="flex items-center gap-1 xs:gap-1.5 sm:gap-2 md:gap-3 text-xs sm:text-sm flex-wrap">
+            <!-- Back Button -->
+            <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-1 xs:gap-1.5 px-2 xs:px-3 py-1 xs:py-1.5 sm:px-3.5 sm:py-2 bg-white border border-gray-200 rounded-lg text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 hover:border-indigo-300 font-medium transition-all duration-200 whitespace-nowrap group flex-shrink-0">
+              <i class="fas fa-arrow-left text-xs group-hover:-translate-x-0.5 transition-transform duration-200"></i>
+              <span class="hidden xs:inline text-xs sm:text-sm font-medium">Back</span>
+            </a>
+
+            <!-- Separator -->
+            <span class="text-gray-300 hidden xs:inline text-xs">|</span>
+
+            <!-- Breadcrumb Path -->
+            <ol class="flex items-center gap-1 xs:gap-1.5 sm:gap-2 md:gap-2.5 flex-wrap">
+              <li class="text-gray-500 text-xs sm:text-sm font-medium">
+                <span class="inline-block px-1.5 xs:px-2 sm:px-2.5 py-0.5 xs:py-1 sm:py-1.5 bg-indigo-50 text-indigo-700 rounded font-semibold text-xs whitespace-nowrap">{{ product.category }}</span>
+              </li>
+              <li class="text-gray-300 hidden xs:inline text-xs">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </li>
+              <li class="text-gray-700 text-xs sm:text-sm font-semibold truncate max-w-[120px] xs:max-w-xs sm:max-w-md" title="{{ product.title }}">/{{ product.title }}</li>
+            </ol>
+          </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 xs:gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12">
+          <!-- IMAGE SECTION -->
+          <div class="flex flex-col gap-2 xs:gap-3 sm:gap-4 md:gap-5">
+            <div class="bg-white border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl p-3 xs:p-4 sm:p-6 md:p-8 flex items-center justify-center min-h-[250px] xs:min-h-[300px] sm:min-h-[350px] md:min-h-[450px] lg:min-h-[550px] shadow-sm hover:shadow-md transition-shadow">
+              <img src="{{ product.image }}" alt="{{ product.title }}" class="w-auto max-w-full h-auto max-h-[250px] sm:max-h-[350px] md:max-h-[400px] lg:max-h-[480px] object-contain cursor-zoom-in hover:scale-105 transition-transform" loading="eager" decoding="async" style="image-rendering: auto;" />
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <div class="grid grid-cols-2 border-b border-gray-200">
+                <button id="details-tab" class="details-btn px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 hover:bg-gray-50 transition">Details</button>
+                <button id="shipping-tab" class="shipping-btn px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">Shipping Info</button>
+              </div>
+              <div id="details-content" class="details-content p-3 sm:p-4 text-xs sm:text-sm text-gray-600 space-y-1.5 sm:space-y-2">
+                <p>
+                  <span class="font-semibold">Category:</span> {{ product.category }}
+                </p>
+                <p>
+                  <span class="font-semibold">Availability:</span>
+                  <span class="{% if product.availability == 'Out of Stock' %}
+                      
+                      
+                      text-red-600
+
+
+                    {% else %}
+                      
+                      
+                      text-green-600
+
+
+                    {% endif %} font-semibold">
+                    {{ product.availability }}
+                  </span>
+                </p>
+                <p>
+                  <span class="font-semibold">Warranty:</span> {{ product.warranty_information }}
+                </p>
+              </div>
+              <div id="shipping-content" class="shipping-content p-3 sm:p-4 text-xs sm:text-sm text-gray-600 space-y-1.5 sm:space-y-2 hidden">
+                <p>
+                  <span class="font-semibold">Delivery Time:</span> {{ product.shipping_info }}
+                </p>
+                <p>
+                  <span class="font-semibold">Shipping Cost:</span> Free shipping on orders over $50
+                </p>
+                <p>
+                  <span class="font-semibold">Return Policy:</span> 30-day money-back guarantee
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- DETAILS SECTION -->
+          <div class="flex flex-col">
+            <!-- CATEGORY & RATING -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-3 gap-2 sm:gap-0">
+              <span class="text-xs uppercase tracking-widest text-indigo-600 font-bold bg-indigo-50 px-3 py-1 rounded-full w-fit">{{ product.category }}</span>
+              <div class="flex items-center gap-1">
+                <span class="text-yellow-400 text-sm sm:text-base">★★★★★</span>
+              </div>
+            </div>
+
+            <!-- TITLE -->
+            <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 leading-tight">{{ product.title }}</h1>
+
+            <!-- DESCRIPTION -->
+            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6">{{ product.description }}</p>
+
+            <!-- PRICING SECTION -->
+            <div class="mb-6 sm:mb-8 bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+              <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <span class="text-3xl sm:text-4xl font-bold text-indigo-600">${{ product.price }}</span>
+                {% if product.discount_price %}
+                  <span class="text-lg sm:text-xl text-gray-400 line-through">${{ product.discount_price }}</span>
+                  <span class="text-xs sm:text-sm font-bold bg-red-100 text-red-700 px-3 py-1 rounded-full w-fit">Save {{ product.discount_percentage }}%</span>
+                {% endif %}
+              </div>
+              <p class="text-xs sm:text-sm text-gray-500">In Stock • Fast Delivery Available</p>
+            </div>
+
+            <!-- QUANTITY SELECTOR -->
+            <div class="mb-4 sm:mb-6 flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3 sm:gap-4">
+              <label class="text-xs sm:text-sm font-semibold text-gray-700 whitespace-nowrap">Quantity:</label>
+              <div class="flex items-center border border-gray-300 rounded-lg w-fit">
+                <button id="decreaseBtn" class="px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 text-gray-600 hover:bg-gray-100 transition font-semibold text-xs sm:text-sm">−</button>
+                <input id="quantityInput" type="number" value="1" min="1" max="{{ product.stock }}" class="w-12 xs:w-14 sm:w-16 text-center border-l border-r border-gray-300 py-1.5 xs:py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm" />
+                <button id="increaseBtn" class="px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 text-gray-600 hover:bg-gray-100 transition font-semibold text-xs sm:text-sm">+</button>
+              </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex flex-col xs:flex-row gap-2 xs:gap-3 mb-6 sm:mb-8">
+              {% if product.availability == 'Out of Stock' %}
+                <button disabled class="flex-1 bg-gray-400 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base cursor-not-allowed opacity-60 flex items-center justify-center gap-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>Out of Stock
+                </button>
+              {% else %}
+                <form id="addToCartForm" method="post" action="{% url 'shop:add_to_cart' product.id %}" class="flex-1">
+                  {% csrf_token %}
+                  <input type="hidden" name="quantity" id="quantityField" value="1" />
+                  <button type="submit" id="addToCart_btn" data-product-id="{{ product.id }}" class="addToCart_btn w-full bg-indigo-600 text-white px-4 xs:px-6 sm:px-8 py-2.5 xs:py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-xs xs:text-sm sm:text-base hover:bg-indigo-700 active:scale-[0.98] transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                    <svg class="w-4 xs:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m10-9l2 9m-9 0h14m-14 0a1 1 0 11-2 0 1 1 0 012 0zm14 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                    </svg>
+                    <span id="btnText" class="hidden xs:inline">Add to Cart</span>
+                    <span id="btnTextMobile" class="xs:hidden">Add</span>
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEWS SECTION -->
+        <div class="mt-6 sm:mt-8 md:mt-12 lg:mt-16 bg-white border border-gray-200 rounded-lg sm:rounded-xl p-3 xs:p-4 sm:p-6 md:p-8">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Customer Reviews</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div class="rounded-lg p-4 sm:p-5 flex flex-col justify-center">
+              <button id="toggleReviewForm" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold text-sm sm:text-base hover:bg-indigo-700 transition w-full sm:w-auto">✍️ Write a Review</button>
+            </div>
+          </div>
+          <div id="reviewFormWrapper" class="hidden mt-6 bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm animate-fade-in">
+            {% if user.is_authenticated %}
+              {% if user_review %}
+                <p class="text-green-600 font-semibold">✅ You’ve already reviewed this product.</p>
+              {% else %}
+                <form method="POST" class="space-y-4">
+                  {% csrf_token %}
+
+                  <div>
+                    <label class="block text-sm font-semibold mb-1">Rating</label>
+                    {{ form.rating }}
+                  </div>
+
+                  <div>
+                    <label class="block text-sm font-semibold mb-1">Comment</label>
+                    {{ form.comment }}
+                  </div>
+
+                  <button type="submit" class="w-full sm:w-auto bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">Submit Review</button>
+                </form>
+              {% endif %}
+            {% else %}
+              <p class="text-gray-600">
+                <a href="{% url 'users:login' %}" class="text-indigo-600 font-semibold">Login</a> to write a review.
+              </p>
+            {% endif %}
+          </div>
+          <div class="mt-8 space-y-4">
+            {% if reviews %}
+              {% for review in reviews %}
+                <div class="border border-gray-200 rounded-xl p-4 sm:p-5 bg-gray-50">
+                  <div class="flex items-center justify-between mb-1">
+                    <strong class="text-sm sm:text-base">{{ review.user.username }}</strong>
+                    <span class="text-yellow-500 text-sm">⭐ {{ review.rating }}/5</span>
+                  </div>
+
+                  <p class="text-gray-700 text-sm sm:text-base mt-1">{{ review.comment }}</p>
+
+                  <small class="text-gray-500 text-xs">{{ review.created_at|date:'M d, Y' }}</small>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-gray-500 italic text-center">No reviews yet. Be the first!</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <style>
+    input[type='number']::-webkit-outer-spin-button,
+    input[type='number']::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type='number'] {
+      -moz-appearance: textfield;
+    }
+  </style>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/product_detail.js' %}" defer></script>
+{% endblock %}

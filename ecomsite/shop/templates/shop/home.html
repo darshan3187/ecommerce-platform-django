@@ -1,0 +1,90 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}ShopHub – Home{% endblock %}
+
+{% block content %}
+
+<main class="container mx-auto py-12 px-5 sm:px-4">
+
+  <!-- CATEGORY STRIP - Tighter -->
+  <section class="py-6 sm:py-8 md:py-10 container mx-auto px-3 sm:px-4">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
+    <h2 class="text-lg sm:text-xl md:text-2xl font-bold">Shop by Category</h2>
+    <a href="{% url 'shop:category_list' %}"
+       class="text-xs sm:text-sm md:text-base text-indigo-600 font-medium whitespace-nowrap">
+      View all →
+    </a>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2 sm:gap-3 md:gap-4">
+    {% for category, products in categories_with_products %}
+    <a href="{% url 'shop:product_list' %}?category={{ category }}"
+       class="group bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-2.5 md:p-3 hover:shadow-md
+              transition-all hover:-translate-y-0.5 hover:bg-white">
+      <div class="grid grid-cols-2 gap-1 mb-1.5 sm:mb-2">
+        {% for product in products|slice:":4" %}
+          <img src="{{ product.image }}" alt="{{ product.title }}"
+               class="w-full h-12 sm:h-14 md:h-16 object-cover rounded group-hover:scale-105 transition">
+        {% endfor %}
+      </div>
+      <p class="text-xs sm:text-sm font-semibold text-gray-900 truncate leading-tight">{{ category }}</p>
+    </a>
+    {% endfor %}
+  </div>
+  </section>
+
+  <!-- TRENDING PRODUCTS - Tighter cards -->
+  <section class="py-6 sm:py-8 md:py-10 container mx-auto px-3 sm:px-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
+      <h2 class="text-lg sm:text-xl md:text-2xl font-bold">Trending Products</h2>
+      <a href="{% url 'shop:product_list' %}"
+        class="text-xs sm:text-sm md:text-base text-indigo-600 font-medium whitespace-nowrap">
+        View all →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+      {% for product in trending_products %}
+      <a href="{% url 'shop:product_detail' product.id %}" class="">
+        <article class="group bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 shadow-sm 
+                    hover:shadow-xl hover:-translate-y-1 hover:bg-white transition-all flex flex-col h-full">
+          <div class="mb-2 sm:mb-3 flex-shrink-0">
+            <img src="{{ product.image }}" alt="{{ product.title }}"
+              class="w-full aspect-square object-cover rounded-lg group-hover:scale-105 transition">
+          </div>
+          <p class="text-xs sm:text-sm text-indigo-600 uppercase tracking-wide mb-1.5 font-medium">{{ product.category }}</p>
+          <h3 class="font-semibold text-sm sm:text-base leading-tight line-clamp-2  mb-2 flex-1">
+            {{ product.title }}
+          </h3>
+          <p class="font-bold text-lg sm:text-xl text-gray-900 mb-3">$ {{ product.price }}</p>      
+        </article>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS - Same tight style -->
+<section class="py-6 sm:py-8 md:py-10 container mx-auto px-3 sm:px-4">
+  <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6">Featured Picks</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+    {% for product in featured_products %}
+    <a href="{% url 'shop:product_detail' product.id %}">
+      <article class="group bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 shadow-sm 
+                    hover:shadow-xl hover:-translate-y-1 hover:bg-white transition-all flex flex-col h-full">
+        <div class="mb-2 sm:mb-3 flex-shrink-0">
+          <img src="{{ product.image }}" alt="{{ product.title }}"
+            class="w-full aspect-square object-cover rounded-lg group-hover:scale-105 transition">
+        </div>
+        <h3 class="font-semibold text-sm sm:text-base leading-tight line-clamp-2 mb-3 flex-1">
+          {{ product.title }}
+        </h3>
+        <p class="font-bold text-lg sm:text-xl text-gray-900 mb-3">$ {{ product.price }}</p>
+      </article>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+</main>
+{% endblock %}

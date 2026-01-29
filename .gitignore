@@ -1,0 +1,73 @@
+# =========================
+# Python Bytecode
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# =========================
+# Virtual Environments
+# =========================
+env/
+venv/
+.venv/
+ENV/
+
+# =========================
+# Django Core
+# =========================
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+settings_local.py
+
+# =========================
+# Static & Media Files
+# =========================
+staticfiles/
+media/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Caches & Sessions
+# =========================
+*.cache
+*.pid
+
+# =========================
+# Testing & Coverage
+# =========================
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# =========================
+# IDEs / Editors
+# =========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# OS Junk
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# React / Frontend (if added later)
+# =========================
+node_modules/
+build/
+dist/
+.env.local

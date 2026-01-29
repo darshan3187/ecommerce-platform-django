@@ -1,0 +1,64 @@
+{% extends "shop/base.html" %}
+
+{% block title %}ShopHub – Categories{% endblock %}
+
+{% block content %}
+
+<main class="px-4 sm:px-6 py-8 sm:py-14 w-full">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-6">All Categories</h1>
+    
+    
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2 sm:gap-3 md:gap-4">
+    {% for category, products in categories_with_products %}
+    <a href="{% url 'shop:product_list' %}?category={{ category }}"
+       class="group bg-white/80 backdrop-blur-sm border rounded-lg p-2 sm:p-2.5 md:p-3 hover:shadow-md
+              transition-all hover:-translate-y-0.5 hover:bg-white">
+      <div class="grid grid-cols-2 gap-1 mb-1.5 sm:mb-2">
+        {% for product in products|slice:":4" %}
+            <img
+                src="{{ product.image }}"
+                alt="{{ product.title }}"
+                width="64"
+                height="64"
+                class="w-full h-12 sm:h-14 md:h-16 object-cover rounded group-hover:scale-105 transition">
+        {% endfor %}
+      </div>
+      <p class="text-xs sm:text-sm font-semibold text-gray-900 truncate leading-tight">{{ category }}</p>
+    </a>
+    {% endfor %}
+  </div>
+  
+<!-- PAGINATION -->
+    <nav class="mt-8 sm:mt-12 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+
+        <!-- Previous Page Button -->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="bg-indigo-500 text-white p-2 sm:p-3 rounded-lg hover:bg-indigo-600 active:bg-indigo-700 transition" aria-label="Previous page">
+                <i class="fas fa-chevron-left text-sm"></i>
+            </a>
+        {% else %}
+            <span class="bg-gray-100 text-gray-400 p-2 sm:p-3 rounded-lg cursor-not-allowed">
+                <i class="fas fa-chevron-left text-sm"></i>
+            </span>
+        {% endif %}
+
+        <!-- Page Number Display -->
+        <span class="text-xs sm:text-sm font-medium text-gray-700 bg-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[var(--border)]">
+            <span class="font-semibold">{{ page_obj.number }}</span> / <span class="font-semibold">{{ page_obj.paginator.num_pages }}</span>
+        </span>
+
+        <!-- Next Page Button -->
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="bg-indigo-500 text-white p-2 sm:p-3 rounded-lg hover:bg-indigo-600 active:bg-indigo-700 transition" aria-label="Next page">
+            <i class="fas fa-chevron-right text-sm"></i>
+            </a>
+        {% else %}
+            <span class="bg-gray-100 text-gray-400 p-2 sm:p-3 rounded-lg cursor-not-allowed">
+            <i class="fas fa-chevron-right text-sm"></i>
+            </span>
+        {% endif %}
+
+    </nav>
+</main>
+
+{% endblock %}

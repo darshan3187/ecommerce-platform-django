@@ -1,0 +1,222 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}Shopping Cart - E-com{% endblock %}
+
+{% block content %}
+<main class="px-4 sm:px-6 py-8 sm:py-14 w-full">
+
+<div class="bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-10">
+
+    <!-- HEADER -->
+    <div class="mb-8 sm:mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+        <i class="fas fa-shopping-cart text-indigo-600 mr-3"></i>Shopping Cart
+      </h2>
+      <p class="text-gray-600 text-sm sm:text-base">Review your items before checkout</p>
+    </div>
+
+    {% if cart_items %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+      
+      <!-- CART ITEMS SECTION -->
+      <div class="lg:col-span-2">
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+          
+          <!-- CART ITEMS LIST -->
+          <div class="divide-y divide-gray-200">
+            {% for item in cart_items %}
+            <div class="p-3 sm:p-4 md:p-6 hover:bg-gray-50 transition">
+              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6">
+                
+                <!-- PRODUCT IMAGE -->
+                <div class="flex-shrink-0">
+                  <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-200">
+                    <img 
+                      src="{{ item.product.image }}" 
+                      alt="{{ item.product.title }}"
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+
+                <!-- PRODUCT DETAILS -->
+                <div class="flex-1 flex flex-col min-w-0">
+                  <a href="{% url 'shop:product_detail' item.product.id %}" class="text-xs sm:text-sm md:text-base font-semibold text-gray-900 hover:text-indigo-600 transition mb-1 line-clamp-2">
+                    {{ item.product.title }}
+                  </a>
+                  <p class="text-xs text-gray-600 mb-2 sm:mb-3">
+                    <span class="font-medium">{{ item.product.category }}</span> 
+                    {% if item.product.availability == "Out of Stock" %}
+                      <span class="ml-2 text-red-600 font-semibold">Out of Stock</span>
+                    {% endif %}
+                  </p>
+                  
+                  <!-- QUANTITY SELECTOR -->
+                  <div class="flex items-center border border-gray-300 rounded-lg w-fit">
+                    <button class="quantity-decrease px-1.5 sm:px-2 md:px-3 py-1 text-gray-600 hover:bg-gray-100 transition font-semibold text-xs sm:text-sm" data-item-id="{{ item.id }}">−</button>
+                    <input type="number" value="{{ item.quantity }}" min="1" max="100" class="quantity-input w-10 sm:w-12 md:w-14 text-center border-l border-r border-gray-300 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm" data-item-id="{{ item.id }}" />
+                    <button class="quantity-increase px-1.5 sm:px-2 md:px-3 py-1 text-gray-600 hover:bg-gray-100 transition font-semibold text-xs sm:text-sm" data-item-id="{{ item.id }}">+</button>
+                  </div>
+                </div>
+
+                <!-- PRICE & REMOVE -->
+                <div class="flex sm:flex-col justify-between sm:justify-between items-center sm:items-end gap-2 sm:gap-3">
+                  <div class="text-right">
+                    <p class="text-xs text-gray-600">Subtotal</p>
+                    <p class="text-sm sm:text-base md:text-lg font-bold text-gray-900">${{ item.subtotal|floatformat:2 }}</p>
+                  </div>
+
+                  <a href="{% url 'shop:remove_from_cart' item.id %}" class="remove-from-cart text-red-600 hover:text-red-700 hover:bg-red-50 p-1.5 sm:p-2 rounded-lg transition" title="Remove from cart" data-item-id="{{ item.id }}">
+                    <i class="fas fa-trash-alt text-sm sm:text-base md:text-lg"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- CONTINUE SHOPPING BUTTON -->
+        <div class="mt-4 sm:mt-6 flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2 xs:gap-3">
+          <a href="{% url 'shop:product_list' %}" class="inline-flex items-center justify-center xs:justify-start gap-2 text-indigo-600 hover:text-indigo-700 font-semibold transition py-2 px-3 rounded-lg hover:bg-indigo-50">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="text-xs sm:text-sm">Continue Shopping</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY SECTION -->
+      <div class="lg:col-span-1">
+        <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm lg:sticky lg:top-4">
+          
+          <!-- SUMMARY HEADER -->
+          <h3 class="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2">
+            <i class="fas fa-receipt text-indigo-600 text-sm sm:text-base"></i>Order Summary
+          </h3>
+          
+          <!-- PROMO CODE -->
+          <div class="mb-4 sm:mb-6">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+              <i class="fas fa-tag text-green-600 mr-1"></i>Promo Code
+            </label>
+            <div class="flex gap-1.5 sm:gap-2">
+              <input 
+                type="text" 
+                id="promoInput"
+                placeholder="Enter code" 
+                class="flex-1 px-2.5 sm:px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button class="bg-indigo-600 text-white px-3 sm:px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm hover:bg-indigo-700 transition whitespace-nowrap">
+                Apply
+              </button>
+            </div>
+          </div>
+
+          <!-- DIVIDER -->
+          <div class="border-t border-gray-200 my-4 sm:my-6"></div>
+
+          <!-- CALCULATIONS -->
+          <div class="space-y-2 sm:space-y-3 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">Subtotal</span>
+              <span class="font-semibold text-gray-900">${{ cart_total|floatformat:2 }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">
+                <i class="fas fa-shipping-fast text-green-600 mr-1"></i>Shipping
+              </span>
+              <span class="font-semibold text-green-600">Free</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">
+                <i class="fas fa-percentage text-blue-600 mr-1"></i>Tax (Est.)
+              </span>
+              <span class="font-semibold text-gray-900">${{ tax|floatformat:2 }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">
+                <i class="fas fa-gift text-red-600 mr-1"></i>Discount
+              </span>
+              <span class="font-semibold text-red-600">−$0.00</span>
+            </div>
+          </div>
+
+          <!-- DIVIDER -->
+          <div class="border-t border-gray-200 my-4 sm:my-6"></div>
+
+          <!-- TOTAL -->
+          <div class="flex items-center justify-between mb-4 sm:mb-6">
+            <span class="text-sm sm:text-base md:text-lg font-bold text-gray-900">Total</span>
+            <span class="text-xl sm:text-2xl md:text-3xl font-bold text-indigo-600">${{ total|floatformat:2 }}</span>
+          </div>
+
+          <!-- CHECKOUT BUTTONS -->
+          <div class="space-y-2 sm:space-y-3">
+            <a href="{% url 'shop:checkout' %}" class="w-full bg-indigo-600 text-white py-2.5 sm:py-3 md:py-3.5 rounded-xl font-bold text-xs sm:text-sm md:text-base hover:bg-indigo-700 active:scale-[0.98] transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+              <i class="fas fa-lock text-xs sm:text-sm"></i>
+              <span>Proceed to Checkout</span>
+            </a>
+            <a href="{% url 'shop:product_list' %}" class="block w-full border-2 border-indigo-600 text-indigo-600 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base hover:bg-indigo-50 active:scale-[0.98] transition text-center">
+              Continue Shopping
+            </a>
+          </div>
+
+          <!-- SECURITY BADGE -->
+          <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center">
+            <i class="fas fa-shield-alt text-green-600 text-sm sm:text-base md:text-lg"></i>
+            <span class="text-xs text-gray-600">
+              Secure checkout powered by
+              <span class="font-semibold">Stripe</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <!-- EMPTY CART MESSAGE -->
+    <div class="bg-white border border-gray-200 rounded-xl p-8 sm:p-12 text-center max-w-2xl mx-auto">
+      <div class="mb-6">
+        <i class="fas fa-shopping-cart text-6xl sm:text-7xl text-gray-300 mb-4 block"></i>
+      </div>
+      <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
+      <p class="text-gray-600 text-sm sm:text-base mb-8 max-w-lg mx-auto">
+        Looks like you haven't added any items yet. Start shopping to find your favorites!
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="{% url 'shop:product_list' %}" class="inline-block bg-indigo-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-indigo-700 transition shadow-lg hover:shadow-xl">
+          <i class="fas fa-shopping-bag mr-2"></i>Continue Shopping
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+</main>
+<style>
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

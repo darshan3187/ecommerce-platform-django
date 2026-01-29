@@ -1,0 +1,126 @@
+{% extends 'shop/base.html' %}
+{% block title %}Checkout - Ecom{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-10">
+
+<div class="container mx-auto px-4 py-10">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <i class="fas fa-lock text-indigo-600"></i> Secure Checkout
+        </h1>
+        <p class="text-gray-500 mt-1">Complete your order in just a few steps</p>
+    </div>
+
+    {% if cart_items %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- LEFT: Checkout Form -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border p-6">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800">
+                Billing Details
+            </h2>
+
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        {{ Form.full_name }}
+                        {% if Form.full_name.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ Form.full_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        {{ Form.email }}
+                        {% if Form.email.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ Form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                        {{ Form.address }}
+                    </div>
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                        {{ Form.city }}
+                    </div>
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                        {{ Form.country }}
+                    </div>
+                    <div>
+                        <label for="postal_code" class="block text-sm font-medium text-gray-700 mb-1">Zip Code</label>
+                        {{ Form.postal_code }}
+                        {% if Form.postal_code.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ Form.postal_code.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <button type="submit"
+                    class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition">
+                    Place Order
+                </button>
+            </form>
+        </div>
+
+        <!-- RIGHT: Order Summary -->
+        <div class="bg-white rounded-xl shadow-sm border p-6 h-fit sticky top-24">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">
+                Order Summary
+            </h2>
+
+            <ul class="space-y-4">
+                {% for item in cart_items %}
+                <li class="flex justify-between text-sm">
+                    <div>
+                        <p class="font-medium">{{ item.product.title }}</p>
+                        <p class="text-gray-500">Qty: {{ item.quantity }}</p>
+                    </div>
+                    <span class="font-semibold">
+                        ${{ item.product.price }}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <hr class="my-4">
+
+            <div class="flex justify-between text-sm text-gray-600">
+                <span>Subtotal</span>
+                <span>${{ cart_total|floatformat:2 }}</span>
+            </div>
+
+            <div class="flex justify-between text-sm text-gray-600 mt-2">
+                <span>Tax</span>
+                <span class="text-green-600">${{ tax|floatformat:2 }}</span>
+            </div>
+
+            <div class="flex justify-between text-sm text-gray-600 mt-2">
+                <span>Shipping</span>
+                <span class="text-green-600">$ 0</span>
+
+            </div>
+
+            <div class="flex justify-between text-lg font-bold mt-4">
+                <span>Total</span>
+                <span class="text-indigo-600">${{ total|floatformat:2 }}</span>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+
+</main>
+
+<style>
+.input-field {
+    @apply w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500;
+}
+</style>
+
+{% endblock %}
