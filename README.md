@@ -123,4 +123,64 @@ Visit `http://127.0.0.1:8000` in your browser.
 -   **Issues**: If you encounter bugs or have feature requests, please [open an issue](https://github.com/darshan3187/ecommerce-platform-django/issues) on GitHub.
 -   **Documentation**: For Django specific questions, refer to the [official Django documentation](https://docs.djangoproject.com/).
 -   **Tailwind**: For styling help, check the [Tailwind CSS docs](https://tailwindcss.com/docs).
+-   
+## 🏗️ Project Structure
+
+```
+ecomsite/
+├── ecomsite/              # Main Django project settings
+│   ├── settings.py        # Project configuration
+│   ├── urls.py           # URL routing
+│   └── wsgi.py           # WSGI configuration
+├── shop/                 # E-commerce app
+│   ├── models.py         # Product, Cart, Order models
+│   ├── views.py          # Product and checkout views
+│   └── templates/        # Shop templates
+├── users/                # User authentication app
+│   ├── models.py         # Custom user model
+│   └── views.py          # Login/signup views
+├── theme/                # UI/Styling app
+│   ├── static/           # CSS, JS, images
+│   └── tailwind.config.js # Tailwind configuration
+├── manage.py             # Django CLI
+└── requirements.txt      # Python dependencies
+```
+
+## ✨ Key Features
+
+- **Product Management**: Browse products by category with filtering
+- **Shopping Cart**: Add/update/remove items with persistent storage
+- **User Authentication**: Secure signup/login with email verification
+- **Google OAuth**: Social login integration via django-allauth
+- **Order Management**: Complete order tracking and history
+- **Responsive Design**: Mobile-first UI with Tailwind CSS
+- **Email Notifications**: Automatic order confirmation emails
+- **Admin Dashboard**: Django admin panel for product/order management
+
+## 🚀 Future Improvements
+
+- [ ] Payment gateway integration (Stripe, Razorpay)
+- [ ] Wishlist & product reviews feature
+- [ ] Search & advanced filtering
+- [ ] Inventory management
+- [ ] Email marketing integration
+- [ ] Multi-currency support
+- [ ] API endpoints for mobile app
+- [ ] Unit & integration tests with pytest
+- [ ] GitHub Actions CI/CD pipeline
+- [ ] Docker containerization
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👤 Author
+
+**Darshan Rajgor**
+- GitHub: [@darshan3187](https://github.com/darshan3187)
+- Email: darshanrajgor73@gmail.com
+
+---
+
+**⭐ If you found this helpful, please consider starring the repository!**
 
