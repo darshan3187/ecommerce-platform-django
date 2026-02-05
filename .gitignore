@@ -27,7 +27,6 @@ settings_local.py
 # =========================
 staticfiles/
 media/
-
 # =========================
 # Environment Variables
 # =========================

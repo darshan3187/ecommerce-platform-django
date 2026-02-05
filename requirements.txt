@@ -1,0 +1,8 @@
+Django
+django-tailwind
+django-browser-reload
+django-widget-tweaks
+django-allauth
+python-dotenv
+requests
+pillow
