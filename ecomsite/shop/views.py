@@ -265,7 +265,7 @@ def checkout(request):
     form = CheckoutForm(request.POST or None)
 
     cart_total = sum(item.subtotal for item in cart_items)
-    tax = cart_total * 0.1
+    tax = cart_total * Decimal(0.1)
     total = cart_total + tax
 
     if request.method == "POST" and form.is_valid():
