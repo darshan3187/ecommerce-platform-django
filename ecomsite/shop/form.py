@@ -57,4 +57,4 @@ class CheckoutForm(forms.ModelForm):
         self.fields['postal_code'].widget.attrs.update(
             {'class': 'w-full px-3 py-2 border rounded', 'placeholder': 'Postal Code'})
         self.fields['country'].widget.attrs.update(
-            {'class': 'w-full px-3 py-2 border rounded', 'placeholder': 'Country'})
+            {'class': 'w-full px-3 py-2 border rounded', 'placeholder': 'Country' })

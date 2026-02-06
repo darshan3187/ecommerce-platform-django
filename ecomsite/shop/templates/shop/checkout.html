@@ -27,14 +27,14 @@
                 {% csrf_token %}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                         {{ Form.full_name }}
                         {% if Form.full_name.errors %}
                             <div class="text-red-500 text-sm mt-1">{{ Form.full_name.errors }}</div>
                         {% endif %}
                     </div>
                     <div>
-                        <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         {{ Form.email }}
                         {% if Form.email.errors %}
                             <div class="text-red-500 text-sm mt-1">{{ Form.email.errors }}</div>

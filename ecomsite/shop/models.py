@@ -86,7 +86,7 @@ class Order(models.Model):
     email = models.EmailField()
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=50)
-    postal_code = models.CharField(max_length=20)
+    postal_code = models.CharField(max_length=6)
     country = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
