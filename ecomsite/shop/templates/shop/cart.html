@@ -54,10 +54,8 @@
                   </p>
                   
                   <!-- QUANTITY SELECTOR -->
-                  <div class="flex items-center border border-gray-300 rounded-lg w-fit">
-                    <button class="quantity-decrease px-1.5 sm:px-2 md:px-3 py-1 text-gray-600 hover:bg-gray-100 transition font-semibold text-xs sm:text-sm" data-item-id="{{ item.id }}">−</button>
-                    <input type="number" value="{{ item.quantity }}" min="1" max="100" class="quantity-input w-10 sm:w-12 md:w-14 text-center border-l border-r border-gray-300 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm" data-item-id="{{ item.id }}" />
-                    <button class="quantity-increase px-1.5 sm:px-2 md:px-3 py-1 text-gray-600 hover:bg-gray-100 transition font-semibold text-xs sm:text-sm" data-item-id="{{ item.id }}">+</button>
+                  <div class="flex items-center border border-gray-300 p-3 rounded-lg w-fit">
+                    Quantity : {{ item.quantity }}
                   </div>
                 </div>
 
