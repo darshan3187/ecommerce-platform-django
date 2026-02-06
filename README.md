@@ -145,6 +145,12 @@ ecomsite/
 ├── manage.py             # Django CLI
 └── requirements.txt      # Python dependencies
 ```
+## 🗄️ Database Schema
+
+The following diagram represents the relational database design used in this e-commerce application.  
+It illustrates the relationships between users, products, carts, orders, and reviews.
+
+![Database Schema](docs/database-schema.png)
 
 ## ✨ Key Features
 
