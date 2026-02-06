@@ -178,7 +178,13 @@ def product_detail(request, product_id):
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(ProductInfo, id=product_id)
-    quantity = int(request.POST.get('quantity', 1))
+
+    try:
+        quantity = int(request.POST.get('quantity', 1))
+        if quantity < 1:
+            raise ValueError
+    except ValueError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid quantity'}, status=400)
 
     cart, _ = Cart.objects.get_or_create(user=request.user)
 
@@ -192,14 +198,17 @@ def add_to_cart(request, product_id):
         cart_item.quantity += quantity
         cart_item.save()
 
-    total_items = CartItem.objects.filter(cart=cart).count()
-
+    from django.db.models import Sum
+    total_items = CartItem.objects.filter(cart=cart).aggregate(
+        total=Sum('quantity')
+    )['total'] or 0
 
     return JsonResponse({
         'status': 'success',
         'message': 'Item added to cart',
         'cart_count': total_items
     })
+
 
 
 @login_required
